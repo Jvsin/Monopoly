@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 public class Board {
-    ArrayList<Field> fields = new ArrayList<>();
+    private final ArrayList<Field> fields = new ArrayList<>();
     Board() {
+        //TODO: Ekonomia -> ceny nieruchomości
         fields.add(new Field("Start", 0, FieldType.START));
         fields.add(new Field("Buenos Aires", 100, FieldType.NORMAL));
         fields.add(new Field("Chance", 0, FieldType.CHANCE));
@@ -45,5 +46,8 @@ public class Board {
         fields.add(new Field("Chance", 0, FieldType.CHANCE));
         fields.add(new Field("Sao Paulo", 100, FieldType.NORMAL));
         fields.add(new Field("Rio de Janeiro", 100, FieldType.NORMAL));
+    }
+    public Field getField (int fieldIndex) {
+        return fields.get(fieldIndex);
     }
 }
