@@ -1,7 +1,11 @@
 import java.util.ArrayList;
-public class Board {
+import javax.swing.*;
+import java.awt.*;
+public class Board extends JPanel{
+    private final Image mainBoard = new ImageIcon("./assets/planszafinal.png").getImage();
     private final ArrayList<Field> fields = new ArrayList<>();
     Board() {
+        setParameters();
         //TODO: Ekonomia -> ceny nieruchomości
         fields.add(new Field("Start", 0, FieldType.START));
         fields.add(new Field("Buenos Aires", 100, FieldType.NORMAL));
@@ -50,4 +54,18 @@ public class Board {
     public Field getField (int fieldIndex) {
         return fields.get(fieldIndex);
     }
+
+    private void setParameters (){
+        this.setOpaque(true);
+        this.setBounds(0, 0, 1000, 1000);
+        this.setLayout(null);
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2D = (Graphics2D) g;
+
+        g2D.drawImage(mainBoard, 0, 0, null);
+    }
+
 }
