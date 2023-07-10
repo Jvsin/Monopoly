@@ -57,7 +57,7 @@ public class Board extends JPanel{
 
     private void setParameters (){
         this.setOpaque(true);
-        this.setBounds(0, 0, 1000, 1000);
+        this.setBounds(300, 0, 880, 880);
         this.setLayout(null);
     }
     @Override
