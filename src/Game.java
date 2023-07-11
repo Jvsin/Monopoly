@@ -17,7 +17,10 @@ public class Game extends JFrame {
         Player player = new Player(PlayersColors.BLUE);
         board.setPawn(player,0);
     }
-
+    private void buyField (Player player , Field field ) {
+        field.setOwner(player);
+        player.buyField(field);
+    }
     private void setWindowParameters(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
