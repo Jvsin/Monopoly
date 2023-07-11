@@ -5,5 +5,6 @@ public enum FieldType {
     GO_TO_JAIL,
     BALL,
     NORMAL,
-    PARKING
+    PARKING,
+    TAX
 }

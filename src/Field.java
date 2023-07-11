@@ -4,14 +4,20 @@ public class Field {
     //TODO: Ekonomia -> ceny spania
     private final double[] ACCOMMODATION_PRICES = {0.1, 0.2,0.3, 0.4};
     private String Name;
-    private int buyPrice;
-    private int accommodationLevel;
+    private int buyPrice = 0;
+    private int accommodationLevel = 0;
     private FieldType fieldType;
+    private Countries country = null;
 
-    Field(String newName, int price, FieldType type) {
+    Field(String newName, int price, FieldType type, Countries newCountry) {
         Name = newName;
         buyPrice = price;
-        accommodationLevel = 0;
+        country = newCountry;
+        fieldType = type;
+    }
+
+    Field(String newName, FieldType type) {
+        Name = newName;
         fieldType = type;
     }
 
