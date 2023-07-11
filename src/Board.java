@@ -9,6 +9,9 @@ public class Board extends JPanel{
     Board() {
         setParameters();
         generateCoordinatesList();
+        generateFieldsList();
+    }
+    private void generateFieldsList() {
         //TODO: Ekonomia -> ceny nieruchomości
         fields.add(new Field("Start", FieldType.START));
         fields.add(new Field("Port Elizabeth", 100, FieldType.NORMAL, Countries.SOUTH_AFRICA, new ImageIcon("./assets/Cards/firstCard.png").getImage()));
