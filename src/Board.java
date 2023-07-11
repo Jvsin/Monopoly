@@ -9,49 +9,53 @@ public class Board extends JPanel{
     Board() {
         setParameters();
         generateCoordinatesList();
+        setFields();
         //TODO: Ekonomia -> ceny nieruchomości
-        fields.add(new Field("Start", FieldType.START));
+    }
+
+    private void setFields (){
+        fields.add(new Field("Start", FieldType.START,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Port Elizabeth", 100, FieldType.NORMAL, Countries.SOUTH_AFRICA, new ImageIcon("./assets/Cards/firstCard.png").getImage()));
-        fields.add(new Field("Tax", FieldType.TAX));
+        fields.add(new Field("Tax", FieldType.TAX,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Johannesburg", 100, FieldType.NORMAL,Countries.SOUTH_AFRICA,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
-        fields.add(new Field("Chance", FieldType.CHANCE));
+        fields.add(new Field("Chance", FieldType.CHANCE,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Telstar Mexico 1970",50,FieldType.BALL, Countries.BALLS,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Chicago", 100, FieldType.NORMAL,Countries.USA,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
-        fields.add(new Field("Chance", FieldType.CHANCE));
+        fields.add(new Field("Chance", FieldType.CHANCE,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Washinghton", 100, FieldType.NORMAL,Countries.USA,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Pasadena", 100, FieldType.NORMAL, Countries.USA,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
 
-        fields.add(new Field("Jail", FieldType.JAIL));
+        fields.add(new Field("Jail", FieldType.JAIL,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Toulouse", 100, FieldType.NORMAL, Countries.FRANCE,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
-        fields.add(new Field("Chance", FieldType.CHANCE));
+        fields.add(new Field("Chance", FieldType.CHANCE,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Marsyllie", 100, FieldType.NORMAL,Countries.FRANCE,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Paris", 100, FieldType.NORMAL,Countries.FRANCE,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Tango Espania 1982",50,FieldType.BALL,Countries.BALLS,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Berlin", 100, FieldType.NORMAL,Countries.GERMANY,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
-        fields.add(new Field("Chance", FieldType.CHANCE));
+        fields.add(new Field("Chance", FieldType.CHANCE,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Dortmund", 100, FieldType.NORMAL,Countries.GERMANY,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Munich", 100, FieldType.NORMAL,Countries.GERMANY,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
 
-        fields.add(new Field("Parking",FieldType.PARKING));
+        fields.add(new Field("Parking",FieldType.PARKING,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Buenos Aires", 100, FieldType.NORMAL,Countries.ARGENTINA,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
-        fields.add(new Field("Chance", FieldType.CHANCE));
+        fields.add(new Field("Chance", FieldType.CHANCE,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Rosario", 100, FieldType.NORMAL,Countries.ARGENTINA,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
-        fields.add(new Field("Chance", FieldType.CHANCE));
+        fields.add(new Field("Chance", FieldType.CHANCE,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Brazuca Brazil 2014",0,FieldType.BALL, Countries.BALLS,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Napoli", 100, FieldType.NORMAL,Countries.ITALY,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Milan", 100, FieldType.NORMAL,Countries.ITALY,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
-        fields.add(new Field("Chance", FieldType.CHANCE));
+        fields.add(new Field("Chance", FieldType.CHANCE,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Roma", 100, FieldType.NORMAL,Countries.ITALY,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
 
-        fields.add(new Field("Go to jail", FieldType.GO_TO_JAIL));
+        fields.add(new Field("Go to jail", FieldType.GO_TO_JAIL,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Brasilia", 100, FieldType.NORMAL,Countries.BRAZIL,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Sao Paulo", 100, FieldType.NORMAL,Countries.BRAZIL,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
-        fields.add(new Field("Chance", FieldType.CHANCE));
+        fields.add(new Field("Chance", FieldType.CHANCE,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("Rio de Janeiro", 100, FieldType.NORMAL,Countries.BRAZIL,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Jabulani RPA 2010",0,FieldType.BALL,Countries.BALLS,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Birmingham", 100, FieldType.NORMAL,Countries.ENGLAND,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
         fields.add(new Field("Manchester", 100, FieldType.NORMAL,Countries.ENGLAND,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
-        fields.add(new Field("Tax", FieldType.TAX));
+        fields.add(new Field("Tax", FieldType.TAX,new ImageIcon("./assets/Cards/secondCard.png").getImage()));
         fields.add(new Field("London", 100, FieldType.NORMAL,Countries.ENGLAND,new ImageIcon("./assets/Cards/firstCard.png").getImage()));
     }
     private void generateCoordinatesList() {
