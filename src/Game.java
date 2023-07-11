@@ -12,7 +12,7 @@ public class Game extends JFrame {
     private Field cardView = null;
     private final JLabel dicePlaceholder = new JLabel();
     private Dice dice = new Dice();
-
+    private static int PLAYER_NUMBER;
     public int WINDOW_WIDTH = 1500;
     public int WINDOW_HEIGHT = 930;
     private int START_BONUS = 400; // TODO: Ekonomia -> premia za przejscie przez start
@@ -20,12 +20,37 @@ public class Game extends JFrame {
 
     public Game() {
         board = new Board();
-        Player player = new Player(PlayersColors.BLUE);
-        currentPlayer = player;
-        board.setPawn(player, 2);
+        if (PLAYER_NUMBER >= 1) {
+            players[0] = new Player(PlayersColors.BLUE);
+            board.setPawn(players[0], 0);
+        }
+        if (PLAYER_NUMBER >= 2) {
+            players[0] = new Player(PlayersColors.RED);
+            board.setPawn(players[0], 0);
+        }
+        if (PLAYER_NUMBER >= 3) {
+            players[0] = new Player(PlayersColors.GREEN);
+            board.setPawn(players[0], 0);
+        }
+        if (PLAYER_NUMBER == 4) {
+            players[0] = new Player(PlayersColors.YELLOW);
+            board.setPawn(players[0], 0);
+        }
+        currentPlayer = players[0];
         setCardView();
         setWindowParameters();
+    }
 
+    public static void startMenu() {
+        Object[] options = {"2 graczy", "3 graczy", "4 graczy"};
+        int check = JOptionPane.showOptionDialog(null, "Wybierz ilość graczy: ", "Monopoly",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        if (check == 0)
+            PLAYER_NUMBER = 2;
+        else if (check == 1)
+            PLAYER_NUMBER = 3;
+        else
+            PLAYER_NUMBER = 4;
     }
 
     public void round() {
