@@ -14,6 +14,8 @@ public class Game extends JFrame {
     public Game(){
         board = new Board();
         setWindowParameters();
+        Player player = new Player(PlayersColors.BLUE);
+        board.setPawn(player,0);
     }
 
     private void setWindowParameters(){

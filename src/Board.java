@@ -3,9 +3,12 @@ import javax.swing.*;
 import java.awt.*;
 public class Board extends JPanel{
     private final Image mainBoard = new ImageIcon("./assets/planszafinal.png").getImage();
+    public final static int BEGIN_COORDINATE = 0;
     private final ArrayList<Field> fields = new ArrayList<>();
+    private final ArrayList<Coordinate> fieldsCoordinates = new ArrayList<>();
     Board() {
         setParameters();
+        generateCoordinatesList();
         //TODO: Ekonomia -> ceny nieruchomości
         fields.add(new Field("Start", 0, FieldType.START));
         fields.add(new Field("Buenos Aires", 100, FieldType.NORMAL));
@@ -51,6 +54,9 @@ public class Board extends JPanel{
         fields.add(new Field("Sao Paulo", 100, FieldType.NORMAL));
         fields.add(new Field("Rio de Janeiro", 100, FieldType.NORMAL));
     }
+    private void generateCoordinatesList() {
+        fieldsCoordinates.add(new Coordinate(0, 0));
+    }
     public Field getField (int fieldIndex) {
         return fields.get(fieldIndex);
     }
@@ -59,6 +65,14 @@ public class Board extends JPanel{
         this.setOpaque(true);
         this.setBounds(300, 0, 880, 880);
         this.setLayout(null);
+    }
+    public void setPawn(Player pawn, int index) {
+        double scaleX = mainBoard.getWidth(null) / (double) getWidth();
+        double scaleY = mainBoard.getHeight(null) / (double) getHeight();
+        Coordinate coordinate = fieldsCoordinates.get(index);
+        pawn.setBounds((int) (coordinate.getX() * scaleX), (int) (coordinate.getY() * scaleY), Player.PAWN_WIDTH, Player.PAWN_HEIGHT);
+        this.add(pawn);
+        this.repaint();
     }
     @Override
     protected void paintComponent(Graphics g) {
