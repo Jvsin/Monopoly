@@ -15,23 +15,26 @@ public class Game extends JFrame {
 
     public int WINDOW_WIDTH = 1500;
     public int WINDOW_HEIGHT = 930;
-    public Game(){
+    private int START_BONUS = 400; // TODO: Ekonomia -> premia za przejscie przez start
+    private int HOUSE_PRICE = 500; // TODO: Ekonomia -> koszt dobudowania domu
+
+    public Game() {
         board = new Board();
         Player player = new Player(PlayersColors.BLUE);
         currentPlayer = player;
-        board.setPawn(player,2);
+        board.setPawn(player, 2);
         setCardView();
         setWindowParameters();
 
     }
 
-    public void round(){
-        for(Player player : players){
-            //TODO: kolejnosc rund dla graczy
+    public void round() {
+        for (Player player : players) {
+            //TODO: Rozgrywka -> kolejnosc rund dla graczy
         }
     }
 
-    private void setCardView () {
+    private void setCardView() {
         cardView = board.getField(currentPlayer.getPosition());
         repaint();
     }
@@ -39,11 +42,13 @@ public class Game extends JFrame {
     public void setDiceView(int diceResult) {
         dice.setIcon(Dice.diceViews[diceResult - 1]);
     }
-    private void buyField (Player player , Field field ) {
+
+    private void buyField(Player player, Field field) {
         field.setOwner(player);
         player.buyField(field);
     }
-    private void setWindowParameters(){
+
+    private void setWindowParameters() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -51,7 +56,7 @@ public class Game extends JFrame {
         this.setVisible(true);
         this.setTitle("MONOPOLY - WORLD CUP EDITION");
 
-        cardView.setPreferredSize(new Dimension(317,457));
+        cardView.setPreferredSize(new Dimension(317, 457));
         cardView.setHorizontalAlignment(JLabel.CENTER);
 
         dice.setForeground(Color.white);
@@ -70,10 +75,10 @@ public class Game extends JFrame {
         textInfoGame.setFont(new Font("Arial", Font.BOLD, 30));
         textInfoGame.setText("POLE:");
 
-        gameInfoPanel.setPreferredSize(new Dimension(300,900));
+        gameInfoPanel.setPreferredSize(new Dimension(300, 900));
         gameInfoPanel.setBackground(Color.YELLOW);
-        gameInfoPanel.setBounds(0,0,300,900);
-        gameInfoPanel.add(textInfoGame,BorderLayout.CENTER);
+        gameInfoPanel.setBounds(0, 0, 300, 900);
+        gameInfoPanel.add(textInfoGame, BorderLayout.CENTER);
         gameInfoPanel.add(cardView);
         gameInfoPanel.add(dicePlaceholder, BorderLayout.SOUTH);
 
@@ -84,10 +89,10 @@ public class Game extends JFrame {
         textInfoPlayer.setFont(new Font("Arial", Font.BOLD, 40));
         textInfoPlayer.setText("Twoje karty:");
 
-        playerInfoPanel.setPreferredSize(new Dimension(300,900));
-        playerInfoPanel.setBounds(1200,0,300,900);
+        playerInfoPanel.setPreferredSize(new Dimension(300, 900));
+        playerInfoPanel.setBounds(1200, 0, 300, 900);
         gameInfoPanel.setBackground(Color.YELLOW);
-        playerInfoPanel.add(textInfoPlayer,BorderLayout.CENTER);
+        playerInfoPanel.add(textInfoPlayer, BorderLayout.CENTER);
 
         this.add(gameInfoPanel, BorderLayout.WEST);
         this.add(board, BorderLayout.CENTER);

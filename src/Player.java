@@ -12,9 +12,9 @@ public class Player extends JLabel {
     private final PlayersColors playerColor;
     private PlayerStatus playerStatus;
     private final ArrayList<Field> ownedFields = new ArrayList<>();
+
     Player(PlayersColors color) {
-        //TODO: Ekonomia -> pieniądze startowe
-        moneyInWallet = 100;
+        moneyInWallet = 2000; //TODO: Ekonomia -> pieniądze startowe
         positionOnMap = 0;
         playerColor = color;
         playerStatus = PlayerStatus.IN_GAME;
@@ -26,39 +26,50 @@ public class Player extends JLabel {
             default -> this.icon = null;
         }
     }
+
     public PlayerStatus getPlayerStatus() {
         return playerStatus;
     }
+
     public void buyField(Field field) {
         decreaseMoney(field.getBuyPrice());
         ownedFields.add(field);
     }
+
     public void blockPlayer() {
         playerStatus = PlayerStatus.IN_JAIL;
     }
+
     public void unlockPlayer() {
         playerStatus = PlayerStatus.IN_GAME;
     }
+
     public void losePlayer() {
         playerStatus = PlayerStatus.LOST;
     }
+
     public void playerMove(int distance) {
         positionOnMap += distance;
-        if ( positionOnMap >= MAP_DISTANCE )
+        if (positionOnMap >= MAP_DISTANCE)
             positionOnMap -= MAP_DISTANCE;
     }
+
     public int getPosition() {
         return positionOnMap;
     }
+
     public void increaseMoney(int amount) {
         moneyInWallet += amount;
     }
+
     public void decreaseMoney(int amount) {
         moneyInWallet -= amount;
     }
+
     public int getMoneyInWallet() {
         return moneyInWallet;
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
