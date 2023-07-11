@@ -7,6 +7,8 @@ public class Board extends JPanel {
     public final static int BEGIN_COORDINATE = 0;
     private final ArrayList<Field> fields = new ArrayList<>();
     private final ArrayList<Coordinate> fieldsCoordinates = new ArrayList<>();
+    private int beginX = 810;
+    private int beginY = 810;
 
     Board() {
         setParameters();
@@ -62,37 +64,38 @@ public class Board extends JPanel {
     }
 
     private void generateCoordinatesList() {
-        int beginX = 810;
-        int beginY = 810;
         fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        generateCoordinatesRow(-71, 0);
         beginX = beginX - 100;
         fieldsCoordinates.add(new Coordinate(beginX, beginY));
-        for (int i = 0; i < 8; i++) {
-            beginX = beginX - 71;
-            fieldsCoordinates.add(new Coordinate(beginX, beginY));
-        }
-        beginX = beginX - 100;
-        fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        generateCoordinatesRow(0, -71);
         beginY = beginY - 100;
         fieldsCoordinates.add(new Coordinate(beginX, beginY));
-        for (int i = 0; i < 8; i++) {
-            beginY = beginY - 71;
-            fieldsCoordinates.add(new Coordinate(beginX, beginY));
-        }
-        beginY = beginY - 100;
-        fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        generateCoordinatesRow(71, 0);
         beginX = beginX + 100;
         fieldsCoordinates.add(new Coordinate(beginX, beginY));
-        for (int i = 0; i < 8; i++) {
-            beginX = beginX + 71;
-            fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        generateCoordinatesRow(0, 71);
+    }
+
+    private void generateCoordinatesRow(int differenceX, int differenceY) {
+        if (differenceX != 0) {
+            if (differenceX > 0)
+                beginX += 100;
+            else
+                beginX -= 100;
         }
-        beginX = beginX + 100;
-        fieldsCoordinates.add(new Coordinate(beginX, beginY));
-        beginY = beginY + 100;
+        if (differenceY != 0) {
+            if (differenceY > 0)
+                beginY += 100;
+            else
+                beginY -= 100;
+        }
         fieldsCoordinates.add(new Coordinate(beginX, beginY));
         for (int i = 0; i < 8; i++) {
-            beginY = beginY + 71;
+            if (differenceX != 0)
+                beginX += differenceX;
+            else
+                beginY += differenceY;
             fieldsCoordinates.add(new Coordinate(beginX, beginY));
         }
     }

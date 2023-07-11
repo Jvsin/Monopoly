@@ -5,10 +5,10 @@ public class Game extends JFrame {
     private final Player[] players = new Player[4];
     private Player currentPlayer;
     private final Board board;
-    private JPanel gameInfoPanel = new JPanel();
-    private JLabel textInfoGame = new JLabel();
-    private JLabel textInfoPlayer = new JLabel();
-    private JPanel playerInfoPanel = new JPanel();
+    private final JPanel gameInfoPanel = new JPanel();
+    private final JLabel textInfoGame = new JLabel();
+    private final JLabel textInfoPlayer = new JLabel();
+    private final JPanel playerInfoPanel = new JPanel();
     private Field cardView = null;
     private final JLabel dicePlaceholder = new JLabel();
     private final JLabel dicePlaceholderSecond = new JLabel();
@@ -17,8 +17,8 @@ public class Game extends JFrame {
     private static int PLAYER_NUMBER;
     public int WINDOW_WIDTH = 1500;
     public int WINDOW_HEIGHT = 930;
-    private int START_BONUS = 400; // TODO: Ekonomia -> premia za przejscie przez start
-    private int HOUSE_PRICE = 500; // TODO: Ekonomia -> koszt dobudowania domu
+    private final int START_BONUS = 400; // TODO: Ekonomia -> premia za przejscie przez start
+    private final int HOUSE_PRICE = 500; // TODO: Ekonomia -> koszt dobudowania domu
 
     public Game() {
         board = new Board();
@@ -57,10 +57,13 @@ public class Game extends JFrame {
 
     public void round() {
         for (Player player : players) {
+            currentPlayer = player;
             //TODO: Rozgrywka -> kolejnosc rund dla graczy
+            //TODO: Kostka -> dodać listenery na 2 kostki na raz
         }
     }
 
+    // TODO: Kostka -> dodać funkcję rzucającą 2 kostkami 1 po 2
     private void setCardView() {
         cardView = board.getField(currentPlayer.getPosition());
         repaint();
