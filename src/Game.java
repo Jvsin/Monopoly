@@ -11,7 +11,9 @@ public class Game extends JFrame {
     private JPanel playerInfoPanel = new JPanel();
     private Field cardView = null;
     private final JLabel dicePlaceholder = new JLabel();
-    private Dice dice = new Dice();
+    private final JLabel dicePlaceholderSecond = new JLabel();
+    private final Dice dice = new Dice();
+    private final Dice secondDice = new Dice();
     private static int PLAYER_NUMBER;
     public int WINDOW_WIDTH = 1500;
     public int WINDOW_HEIGHT = 930;
@@ -64,8 +66,8 @@ public class Game extends JFrame {
         repaint();
     }
 
-    public void setDiceView(int diceResult) {
-        dice.setIcon(Dice.diceViews[diceResult - 1]);
+    public void setDiceView(int diceResult, Dice dicePlaceholder) {
+        dicePlaceholder.setIcon(Dice.diceViews[diceResult - 1]);
     }
 
     private void buyField(Player player, Field field) {
@@ -88,10 +90,19 @@ public class Game extends JFrame {
         dice.setPreferredSize(new Dimension(90, 90));
         dice.setBounds(50, 0, 90, 90);
 
-        dicePlaceholder.setPreferredSize(new Dimension(200, 200));
-        dicePlaceholder.setHorizontalAlignment(JLabel.CENTER);
+        secondDice.setForeground(Color.white);
+        secondDice.setPreferredSize(new Dimension(90, 90));
+        secondDice.setBounds(50, 0, 90, 90);
+
+        dicePlaceholder.setPreferredSize(new Dimension(200, 100));
+        dicePlaceholder.setHorizontalAlignment(JLabel.LEFT);
         dicePlaceholder.add(dice);
-        setDiceView(1);
+        setDiceView(1, dice);
+
+        dicePlaceholderSecond.setPreferredSize(new Dimension(200, 100));
+        dicePlaceholderSecond.setHorizontalAlignment(JLabel.RIGHT);
+        dicePlaceholderSecond.add(secondDice);
+        setDiceView(4, secondDice);
 
         textInfoGame.setPreferredSize(new Dimension(200, 50));
         textInfoGame.setBackground(new Color(255, 255, 255));
@@ -105,7 +116,8 @@ public class Game extends JFrame {
         gameInfoPanel.setBounds(0, 0, 300, 900);
         gameInfoPanel.add(textInfoGame, BorderLayout.CENTER);
         gameInfoPanel.add(cardView);
-        gameInfoPanel.add(dicePlaceholder, BorderLayout.SOUTH);
+        gameInfoPanel.add(dicePlaceholder);
+        gameInfoPanel.add(dicePlaceholderSecond);
 
         textInfoPlayer.setPreferredSize(new Dimension(200, 200));
         textInfoPlayer.setBackground(new Color(255, 255, 255));
