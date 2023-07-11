@@ -3,15 +3,14 @@ import java.awt.*;
 
 public class Field extends JLabel {
     private final int MAX_ACCOMMODATION_LEVEL = 3;
-
-    //TODO: Ekonomia -> ceny spania
     private Image fieldCard = null;
-    private final double[] ACCOMMODATION_PRICES = {0.1, 0.2, 0.3, 0.4};
-    private String Name;
+    private final double[] ACCOMMODATION_PRICES = {0.1, 0.2, 0.3, 0.4}; //TODO: Ekonomia -> ceny spania
+    private final String Name;
     private int buyPrice = 0;
     private int accommodationLevel = 0;
-    private FieldType fieldType;
+    private final FieldType fieldType;
     private Countries country = null;
+    private Player owner = null;
 
     Field(String newName, int price, FieldType type, Countries newCountry, Image image) {
         Name = newName;
@@ -20,11 +19,20 @@ public class Field extends JLabel {
         fieldType = type;
         fieldCard = image;
     }
-
     Field(String newName, FieldType type, Image image) {
         Name = newName;
         fieldType = type;
         fieldCard = image;
+    }
+    public void setOwner(Player player) {
+        if (fieldType == FieldType.NORMAL || fieldType == FieldType.BALL)
+            owner = player;
+    }
+    public Player getOwner() {
+        return owner;
+    }
+    public int getBuyPrice() {
+        return buyPrice;
     }
     public void increaseAccommodationLevel() {
         if ( accommodationLevel < MAX_ACCOMMODATION_LEVEL && fieldType == FieldType.NORMAL ) {
