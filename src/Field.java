@@ -3,8 +3,8 @@ import java.awt.*;
 
 public class Field extends JLabel {
     private final int MAX_ACCOMMODATION_LEVEL = 3;
-    private Image fieldCard = null;
-    private final double[] ACCOMMODATION_PRICES = {0.1, 0.2, 0.3, 0.4}; //TODO: Ekonomia -> ceny spania
+    private Image fieldCard;
+    private final double[] ACCOMMODATION_PRICES = {0.1, 0.5, 1, 1.5}; //TODO: Ekonomia -> ceny spania
     private final String Name;
     private int buyPrice = 0;
     private int accommodationLevel = 0;
@@ -19,35 +19,40 @@ public class Field extends JLabel {
         fieldType = type;
         fieldCard = image;
     }
+
     Field(String newName, FieldType type, Image image) {
         Name = newName;
         fieldType = type;
         fieldCard = image;
     }
+
     public void setOwner(Player player) {
         if (fieldType == FieldType.NORMAL || fieldType == FieldType.BALL)
             owner = player;
     }
+
     public Player getOwner() {
         return owner;
     }
+
     public int getBuyPrice() {
         return buyPrice;
     }
+
     public void increaseAccommodationLevel() {
-        if ( accommodationLevel < MAX_ACCOMMODATION_LEVEL && fieldType == FieldType.NORMAL ) {
+        if (accommodationLevel < MAX_ACCOMMODATION_LEVEL && fieldType == FieldType.NORMAL) {
             accommodationLevel++;
         }
     }
 
     public double getSleepPrice() {
-        if ( fieldType == FieldType.NORMAL ) {
-            return buyPrice*ACCOMMODATION_PRICES[accommodationLevel];
+        if (fieldType == FieldType.NORMAL) {
+            return buyPrice * ACCOMMODATION_PRICES[accommodationLevel];
         }
         return 0;
     }
 
-    public Image getFieldCard () {
+    public Image getFieldCard() {
         return fieldCard;
     }
 
