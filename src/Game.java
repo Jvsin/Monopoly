@@ -10,6 +10,8 @@ public class Game extends JFrame {
     private JLabel textInfoPlayer = new JLabel();
     private JPanel playerInfoPanel = new JPanel();
     private Field cardView = null;
+    private final JLabel dicePlaceholder = new JLabel();
+    private Dice dice = new Dice();
 
     public int WINDOW_WIDTH = 1500;
     public int WINDOW_HEIGHT = 930;
@@ -33,6 +35,10 @@ public class Game extends JFrame {
         cardView = board.getField(currentPlayer.getPosition());
         repaint();
     }
+
+    public void setDiceView(int diceResult) {
+        dice.setIcon(Dice.diceViews[diceResult - 1]);
+    }
     private void setWindowParameters(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
@@ -43,6 +49,15 @@ public class Game extends JFrame {
 
         cardView.setPreferredSize(new Dimension(317,457));
         cardView.setHorizontalAlignment(JLabel.CENTER);
+
+        dice.setForeground(Color.white);
+        dice.setPreferredSize(new Dimension(90, 90));
+        dice.setBounds(50, 0, 90, 90);
+
+        dicePlaceholder.setPreferredSize(new Dimension(200, 200));
+        dicePlaceholder.setHorizontalAlignment(JLabel.CENTER);
+        dicePlaceholder.add(dice);
+        setDiceView(1);
 
         textInfoGame.setPreferredSize(new Dimension(200, 50));
         textInfoGame.setBackground(new Color(255, 255, 255));
@@ -56,6 +71,7 @@ public class Game extends JFrame {
         gameInfoPanel.setBounds(0,0,300,900);
         gameInfoPanel.add(textInfoGame,BorderLayout.CENTER);
         gameInfoPanel.add(cardView);
+        gameInfoPanel.add(dicePlaceholder, BorderLayout.SOUTH);
 
         textInfoPlayer.setPreferredSize(new Dimension(200, 200));
         textInfoPlayer.setBackground(new Color(255, 255, 255));
