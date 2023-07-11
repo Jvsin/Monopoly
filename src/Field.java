@@ -30,6 +30,9 @@ public class Field extends JLabel {
     public Player getOwner() {
         return owner;
     }
+    public int getBuyPrice() {
+        return buyPrice;
+    }
     public void increaseAccommodationLevel() {
         if ( accommodationLevel < MAX_ACCOMMODATION_LEVEL && fieldType == FieldType.NORMAL ) {
             accommodationLevel++;

@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player extends JLabel {
     private final int MAP_DISTANCE = 40;
@@ -10,6 +11,7 @@ public class Player extends JLabel {
     public final static int PAWN_HEIGHT = 30;
     private final PlayersColors playerColor;
     private PlayerStatus playerStatus;
+    private final ArrayList<Field> ownedFields = new ArrayList<>();
     Player(PlayersColors color) {
         //TODO: Ekonomia -> pieniądze startowe
         moneyInWallet = 100;
@@ -27,11 +29,15 @@ public class Player extends JLabel {
     public PlayerStatus getPlayerStatus() {
         return playerStatus;
     }
+    public void buyField(Field field) {
+        decreaseMoney(field.getBuyPrice());
+        ownedFields.add(field);
+    }
     public void blockPlayer() {
         playerStatus = PlayerStatus.IN_JAIL;
     }
     public void unlockPlayer() {
-        playerStatus = PlayerStatus.IN_JAIL;
+        playerStatus = PlayerStatus.IN_GAME;
     }
     public void losePlayer() {
         playerStatus = PlayerStatus.LOST;
@@ -39,7 +45,7 @@ public class Player extends JLabel {
     public void playerMove(int distance) {
         positionOnMap += distance;
         if ( positionOnMap >= MAP_DISTANCE )
-            positionOnMap -= positionOnMap;
+            positionOnMap -= MAP_DISTANCE;
     }
     public int getPosition() {
         return positionOnMap;
