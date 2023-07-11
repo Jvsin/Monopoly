@@ -19,9 +19,10 @@ public class Field extends JLabel {
         fieldType = type;
         fieldCard = image;
     }
-    Field(String newName, FieldType type) {
+    Field(String newName, FieldType type, Image image) {
         Name = newName;
         fieldType = type;
+        fieldCard = image;
     }
     public void setOwner(Player player) {
         if (fieldType == FieldType.NORMAL || fieldType == FieldType.BALL)
@@ -44,5 +45,14 @@ public class Field extends JLabel {
             return buyPrice*ACCOMMODATION_PRICES[accommodationLevel];
         }
         return 0;
+    }
+
+    public Image getFieldCard () {
+        return fieldCard;
+    }
+
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(fieldCard, 0, 0, this);
     }
 }
