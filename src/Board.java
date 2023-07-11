@@ -55,7 +55,39 @@ public class Board extends JPanel{
         fields.add(new Field("Rio de Janeiro", 100, FieldType.NORMAL));
     }
     private void generateCoordinatesList() {
-        fieldsCoordinates.add(new Coordinate(0, 0));
+        int beginX = 810;
+        int beginY = 810;
+        fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        beginX = beginX - 100;
+        fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        for (int i = 0 ; i < 8 ;i++) {
+            beginX = beginX - 71;
+            fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        }
+        beginX = beginX - 100;
+        fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        beginY = beginY - 100;
+        fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        for ( int i = 0 ; i < 8 ; i++ ) {
+            beginY = beginY - 71;
+            fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        }
+        beginY = beginY - 100;
+        fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        beginX = beginX + 100;
+        fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        for (int i = 0 ; i < 8 ;i++) {
+            beginX = beginX + 71;
+            fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        }
+        beginX = beginX + 100;
+        fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        beginY = beginY + 100;
+        fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        for ( int i = 0 ; i < 8 ; i++ ) {
+            beginY = beginY + 71;
+            fieldsCoordinates.add(new Coordinate(beginX, beginY));
+        }
     }
     public Field getField (int fieldIndex) {
         return fields.get(fieldIndex);
