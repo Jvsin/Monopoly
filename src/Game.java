@@ -22,7 +22,6 @@ public class Game extends JFrame {
     private static int PLAYER_NUMBER;
     public int WINDOW_WIDTH = 1500;
     public int WINDOW_HEIGHT = 930;
-    private final int START_BONUS = 400; // TODO: Ekonomia -> premia za przejscie przez start
     private final int HOUSE_PRICE = 500; // TODO: Ekonomia -> koszt dobudowania domu
 
     public Game() {

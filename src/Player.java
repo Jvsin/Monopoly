@@ -13,6 +13,7 @@ public class Player extends JLabel {
     private final PlayersColors playerColor;
     private PlayerStatus playerStatus;
     private final ArrayList<Field> ownedFields = new ArrayList<>();
+    private final int START_BONUS = 400; // TODO: Ekonomia -> premia za przejscie przez start
 
     Player(PlayersColors color) {
         moneyInWallet = 2000; //TODO: Ekonomia -> pieniądze startowe
@@ -52,8 +53,10 @@ public class Player extends JLabel {
 
     public void playerMove(int distance) {
         positionOnMap += distance;
-        if (positionOnMap >= MAP_DISTANCE)
+        if (positionOnMap >= MAP_DISTANCE) {
+            moneyInWallet += START_BONUS;
             positionOnMap -= MAP_DISTANCE;
+        }
     }
 
     public int getPosition() {
