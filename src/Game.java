@@ -53,7 +53,6 @@ public class Game extends JFrame {
         Object[] options = {"2 graczy", "3 graczy", "4 graczy"};
         int check = JOptionPane.showOptionDialog(null, "Wybierz ilość graczy: ", "Monopoly",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-        System.out.println(check);
         if (check == 0)
             PLAYER_NUMBER = 2;
         else if (check == 1)
@@ -100,7 +99,11 @@ public class Game extends JFrame {
     private void triggerChance() {
         Chance chance = board.getRandomChance();
         // TODO: okno informujące -> wylosowałeś szansę o tekście i musisz zapłacić / wygrałeś
-
+        chance.getContents(); // treść szansy
+        currentPlayer.increaseMoney(chance.getMoney(currentPlayer.getMoneyInWallet()));
+        if (currentPlayer.getMoneyInWallet() < 0) {
+            // TODO: Opcja windykacji działek
+        }
     }
 
     private void triggerNormal() {
@@ -108,21 +111,37 @@ public class Game extends JFrame {
     }
 
     private void triggerJail() {
-
+        // TODO: Rozgrywka -> Czy gracz wychodzi dopiero po wyrzuceniu 2*6?
+        if (diceResult == 12) {
+            // TODO: okno informujące -> wychodzisz z więzienia
+            currentPlayer.unlockPlayer();
+        } else {
+            // TODO: okno informujące -> zostajesz w więzieniu
+        }
     }
 
     private void triggerBall(Field field) {
         if (field.getOwner() == null) {
-            // TODO: okno informujące -> pytanie czy chcesz kupić piłkę
+            if (field.getBuyPrice() > currentPlayer.getMoneyInWallet()) {
+                // TODO: okno informujące -> nie masz wystarczająco kosy
+            } else {
+                // TODO: okno informujące -> pytanie czy chcesz kupić piłkę
+                buyField(currentPlayer, field);
+            }
+
         } else if (field.getOwner() != currentPlayer) {
             int sleepPrice = (int) field.getSleepPrice();
             // TODO: okno informujące -> konieczność zapłacenia opłaty za postój
             currentPlayer.decreaseMoney(sleepPrice);
+            // TODO: Opcja windykacji działek
         }
     }
 
     private void triggerTax() {
-
+        int tax = (int) board.getRandomChance().getRandomTax() * currentPlayer.getMoneyInWallet();
+        // TODO: okno informujące -> musisz zapłacić tyle w podatkach
+        currentPlayer.decreaseMoney(tax);
+        // TODO: Opcja windykacji działek
     }
 
     public void repaintBoard() {
