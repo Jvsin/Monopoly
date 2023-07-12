@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import java.util.concurrent.CountDownLatch;
 
 public class Game extends JFrame {
-    private final Player[] players = new Player[4];
+    private final Player[] players;
     private Player currentPlayer;
     private final Board board;
     private final JPanel gameInfoPanel = new JPanel();
@@ -27,6 +27,7 @@ public class Game extends JFrame {
 
     public Game() {
         board = new Board();
+        players = new Player[PLAYER_NUMBER];
         if (PLAYER_NUMBER >= 1) {
             players[0] = new Player(PlayersColors.BLUE);
             board.setPawn(players[0], 0);
@@ -52,6 +53,7 @@ public class Game extends JFrame {
         Object[] options = {"2 graczy", "3 graczy", "4 graczy"};
         int check = JOptionPane.showOptionDialog(null, "Wybierz ilość graczy: ", "Monopoly",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        System.out.println(check);
         if (check == 0)
             PLAYER_NUMBER = 2;
         else if (check == 1)
@@ -68,6 +70,7 @@ public class Game extends JFrame {
             System.out.println("wynik kostki:" + diceResult);
             currentPlayer.playerMove(diceResult);
             board.setPawn(currentPlayer,currentPlayer.getPosition());
+            setCardView();
             System.out.println("pozycja gracza: " + currentPlayer.getPlayerColor() + " " + currentPlayer.getPosition());
             diceResult = 0;
             repaintBoard();
@@ -82,6 +85,7 @@ public class Game extends JFrame {
         gameInfoPanel.repaint();
         playerInfoPanel.repaint();
         setInformation();
+        repaint();
     }
     private void setDiceListeners() {
         final CountDownLatch latch = new CountDownLatch(1);
