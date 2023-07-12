@@ -26,13 +26,14 @@ public class Dice extends JLabel {
         diceViews[5] = new ImageIcon("./assets/Dice/DiceImage6.png");
     }
 
-    public void diceThrow() {
+    public int diceThrow() {
         int min = 1;
         int max = 6;
         diceResult = (int) Math.floor(Math.random() * (max - min + 1) + min);
         currentImage = diceViews[diceResult - 1];
 
         repaint();
+        return diceResult;
     }
 
     @Override
