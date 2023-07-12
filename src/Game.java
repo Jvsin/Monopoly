@@ -45,7 +45,7 @@ public class Game extends JFrame {
             board.setPawn(players[3], 0);
         }
         currentPlayer = players[0];
-        setCardView();
+        cardView = board.getField(currentPlayer.getPosition());
         setWindowParameters();
     }
 
@@ -64,8 +64,8 @@ public class Game extends JFrame {
 
     public void round() {
         for (Player player : players) {
-            repaintBoard();
             currentPlayer = player;
+            setInformation();
             setDiceListeners();
             System.out.println("wynik kostki:" + diceResult);
             currentPlayer.playerMove(diceResult);
@@ -84,8 +84,6 @@ public class Game extends JFrame {
         board.repaint();
         gameInfoPanel.repaint();
         playerInfoPanel.repaint();
-        setInformation();
-        repaint();
     }
     private void setDiceListeners() {
         final CountDownLatch latch = new CountDownLatch(1);
@@ -119,7 +117,9 @@ public class Game extends JFrame {
         textInfoGame.setText("Ruch: " + currentPlayer.getPlayerColor());
     }
     private void setCardView() {
-        cardView = board.getField(currentPlayer.getPosition());
+        Field tempField = board.getField(currentPlayer.getPosition());
+        Image image = tempField.getFieldCard();
+        cardView.setFieldCard(image);
         cardView.repaint();
     }
 
