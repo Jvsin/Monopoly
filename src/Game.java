@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 public class Game extends JFrame {
@@ -45,8 +46,12 @@ public class Game extends JFrame {
             board.setPawn(players[3], 0);
         }
         currentPlayer = players[0];
-        cardView = board.getField(currentPlayer.getPosition());
+        setDefaultCard();
         setWindowParameters();
+
+        currentPlayer.tempFunAddCity(board.getField(1));
+        currentPlayer.tempFunAddCity(board.getField(3));
+        currentPlayer.tempFunAddCity(board.getField(11));
     }
 
     public static void startMenu() {
@@ -84,6 +89,7 @@ public class Game extends JFrame {
         board.repaint();
         gameInfoPanel.repaint();
         playerInfoPanel.repaint();
+        setPlayerCards(currentPlayer);
     }
     private void setDiceListeners() {
         final CountDownLatch latch = new CountDownLatch(1);
@@ -121,6 +127,27 @@ public class Game extends JFrame {
         Image image = tempField.getFieldCard();
         cardView.setFieldCard(image);
         cardView.repaint();
+    }
+    private void setDefaultCard () {
+        Image image = new ImageIcon("./assets/Cards/defaultCard.png").getImage();
+        cardView = board.getField(0);
+        cardView.setFieldCard(image);
+        cardView.repaint();
+    }
+
+    private void setPlayerCards(Player currPlayer){
+        ArrayList<Field> fieldToDisplay = new ArrayList<>();
+        for(Field owns : currPlayer.getOwnedFields()){
+            Field tempField = owns;
+            tempField.setFieldCard(owns.getMiniFieldCard());
+            tempField.setPreferredSize(new Dimension(100, 30));
+            tempField.setBounds(0, 0, 100, 30);
+            fieldToDisplay.add(tempField);
+        }
+        for(Field field : fieldToDisplay){
+            playerInfoPanel.add(field);
+        }
+        playerInfoPanel.repaint();
     }
 
     public void setDiceView(int diceResult, Dice dicePlaceholder) {
@@ -180,7 +207,7 @@ public class Game extends JFrame {
         textInfoPlayer.setBackground(new Color(255, 255, 255));
         textInfoPlayer.setForeground(new Color(241, 3, 3));
         textInfoPlayer.setHorizontalAlignment(JLabel.CENTER);
-        textInfoPlayer.setFont(new Font("Arial", Font.BOLD, 40));
+        textInfoPlayer.setFont(new Font("Arial", Font.BOLD, 20));
         textInfoPlayer.setText("Twoje karty:");
 
         playerInfoPanel.setPreferredSize(new Dimension(300, 900));

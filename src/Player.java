@@ -11,6 +11,7 @@ public class Player extends JLabel {
     public final static int PAWN_HEIGHT = 30;
     private final PlayersColors playerColor;
     private PlayerStatus playerStatus;
+
     private final ArrayList<Field> ownedFields = new ArrayList<>();
 
     Player(PlayersColors color) {
@@ -26,7 +27,9 @@ public class Player extends JLabel {
             default -> this.icon = null;
         }
     }
-
+    public void tempFunAddCity(Field boughtField){
+        ownedFields.add(boughtField);
+    }
     public PlayerStatus getPlayerStatus() {
         return playerStatus;
     }
@@ -72,6 +75,10 @@ public class Player extends JLabel {
 
     public PlayersColors getPlayerColor() {
         return playerColor;
+    }
+
+    public ArrayList<Field> getOwnedFields() {
+        return ownedFields;
     }
     @Override
     protected void paintComponent(Graphics g) {
