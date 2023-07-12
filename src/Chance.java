@@ -13,12 +13,8 @@ public class Chance {
         return contents;
     }
 
-    public int getMoney() {
-        return money;
-    }
-
-    public double getTax() {
-        return tax;
+    public int getMoney(int playerMoney) {
+        return (int) (-(tax * playerMoney) + money);
     }
 
     public double getRandomTax() {
