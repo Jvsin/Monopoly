@@ -1,3 +1,4 @@
+import javax.crypto.spec.ChaCha20ParameterSpec;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -12,13 +13,12 @@ public class Game extends JFrame {
     private final JLabel textInfoGame = new JLabel();
     private final JLabel textInfoPlayer = new JLabel();
     private final JPanel playerInfoPanel = new JPanel();
-    private Field cardView = null;
+    private final Field cardView;
     private final JLabel dicePlaceholder = new JLabel();
     private final JLabel dicePlaceholderSecond = new JLabel();
     private Dice firstDice = new Dice();
     private Dice secondDice = new Dice();
     private int diceResult;
-
     private static int PLAYER_NUMBER;
     public int WINDOW_WIDTH = 1500;
     public int WINDOW_HEIGHT = 930;
@@ -69,22 +69,69 @@ public class Game extends JFrame {
             setDiceListeners();
             System.out.println("wynik kostki:" + diceResult);
             currentPlayer.playerMove(diceResult);
-            board.setPawn(currentPlayer,currentPlayer.getPosition());
+            board.setPawn(currentPlayer, currentPlayer.getPosition());
             setCardView();
+            triggerFieldRound(board.getField(currentPlayer.getPosition()));
             System.out.println("pozycja gracza: " + currentPlayer.getPlayerColor() + " " + currentPlayer.getPosition());
             diceResult = 0;
             repaintBoard();
-            //TODO: Rozgrywka -> kolejnosc rund dla graczy
-            //TODO: Kostka -> dodać listenery na 2 kostki na raz
         }
     }
 
-    public void repaintBoard(){
+    private void triggerFieldRound(Field field) {
+        switch (field.getFieldType()) {
+            case TAX -> triggerTax();
+            case BALL -> triggerBall(field);
+            case JAIL -> triggerJail();
+            case NORMAL -> triggerNormal();
+            case CHANCE -> triggerChance();
+            case GO_TO_JAIL -> triggerGoToJail();
+            case START, PARKING -> {
+            }
+        }
+    }
+
+    private void triggerGoToJail() {
+        currentPlayer.blockPlayer();
+        // TODO: okno informujące -> Idziesz do więzienia
+        board.setPawn(currentPlayer, currentPlayer.getPosition());
+    }
+
+    private void triggerChance() {
+        Chance chance = board.getRandomChance();
+        // TODO: okno informujące -> wylosowałeś szansę o tekście i musisz zapłacić / wygrałeś
+
+    }
+
+    private void triggerNormal() {
+
+    }
+
+    private void triggerJail() {
+
+    }
+
+    private void triggerBall(Field field) {
+        if (field.getOwner() == null) {
+            // TODO: okno informujące -> pytanie czy chcesz kupić piłkę
+        } else if (field.getOwner() != currentPlayer) {
+            int sleepPrice = (int) field.getSleepPrice();
+            // TODO: okno informujące -> konieczność zapłacenia opłaty za postój
+            currentPlayer.decreaseMoney(sleepPrice);
+        }
+    }
+
+    private void triggerTax() {
+
+    }
+
+    public void repaintBoard() {
         setCardView();
         board.repaint();
         gameInfoPanel.repaint();
         playerInfoPanel.repaint();
     }
+
     private void setDiceListeners() {
         final CountDownLatch latch = new CountDownLatch(1);
         firstDice.addMouseListener(new MouseAdapter() {
@@ -113,9 +160,11 @@ public class Game extends JFrame {
         firstDice.removeMouseListener(firstDice.getMouseListeners()[0]);
         secondDice.removeMouseListener(secondDice.getMouseListeners()[0]);
     }
-    private void setInformation () {
+
+    private void setInformation() {
         textInfoGame.setText("Ruch: " + currentPlayer.getPlayerColor());
     }
+
     private void setCardView() {
         Field tempField = board.getField(currentPlayer.getPosition());
         Image image = tempField.getFieldCard();

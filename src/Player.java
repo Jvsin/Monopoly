@@ -9,6 +9,7 @@ public class Player extends JLabel {
     private int positionOnMap;
     public final static int PAWN_WIDTH = 30;
     public final static int PAWN_HEIGHT = 30;
+    private final static int JAIL_INDEX = 10;
     private final PlayersColors playerColor;
     private PlayerStatus playerStatus;
     private final ArrayList<Field> ownedFields = new ArrayList<>();
@@ -37,6 +38,7 @@ public class Player extends JLabel {
     }
 
     public void blockPlayer() {
+        positionOnMap = JAIL_INDEX;
         playerStatus = PlayerStatus.IN_JAIL;
     }
 
@@ -73,6 +75,7 @@ public class Player extends JLabel {
     public PlayersColors getPlayerColor() {
         return playerColor;
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
