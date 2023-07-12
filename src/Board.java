@@ -7,6 +7,7 @@ public class Board extends JPanel {
     public final static int BEGIN_COORDINATE = 0;
     private final ArrayList<Field> fields = new ArrayList<>();
     private final ArrayList<Coordinate> fieldsCoordinates = new ArrayList<>();
+    private final ArrayList<Chance> chances = new ArrayList<>();
     private int beginX = 810;
     private int beginY = 810;
 
@@ -14,6 +15,40 @@ public class Board extends JPanel {
         setParameters();
         generateCoordinatesList();
         generateFieldsList();
+        generateChanceField();
+    }
+
+    private void generateChanceField() {
+        chances.add(new Chance(100, 0, "Dostajesz 100 na bilet"));
+        chances.add(new Chance(200, 0, "Dostajesz 200 na bilet"));
+        chances.add(new Chance(250, 0, "Wygrywasz kupon za 250"));
+        chances.add(new Chance(350, 0, "Masz 350 i baw się dobrze na meczu"));
+        chances.add(new Chance(500, 0, "Dostajesz 500 na nową piłkę"));
+
+        chances.add(new Chance(-100, 0, "Musisz zapłacić 100 mandatu za picie piwa przed stadionem"));
+        chances.add(new Chance(-200, 0, "Zdecydowałeś się kupić lepszy bilet na mecz i musisz dopłacić 200"));
+        chances.add(new Chance(-250, 0, "Właśnie wychodzisz z meczu gdzie twoja drużyna przegrała mecz za 250"));
+        chances.add(new Chance(-250, 0, "Na stadionie wybuchły zamieszki i policja zabrała cię do aresztu. Dostałeś 350 mandatu"));
+        chances.add(new Chance(-500, 0, "Bardzo się spieszyłeś na mecz i dostałeś 500 kary za złe parkowanie"));
+
+        chances.add(new Chance(150, 0, "Szedłeś na mecz i znalazłeś 150 na ulicy"));
+        chances.add(new Chance(300, 0, "Twoja reprezentacja wygrała dla ciebie kupon o wartości 300"));
+        chances.add(new Chance(450, 0, "Właśnie zakręciłeś kołem fortuny przed stadionem i wygrałeś 450"));
+        chances.add(new Chance(400, 0, "Masz 400 i baw się dobrze na meczu"));
+        chances.add(new Chance(600, 0, "Po meczu dostałeś autograf który ktoś od ciebie kupił za 600"));
+
+        chances.add(new Chance(0, 0.1, "Musisz zapłacić 10% podatku"));
+        chances.add(new Chance(0, 0.15, "Musisz zapłacić 15% podatku"));
+        chances.add(new Chance(0, 0.2, "Musisz zapłacić 20% podatku"));
+        chances.add(new Chance(0, 0.25, "Musisz zapłacić 25% podatku"));
+        chances.add(new Chance(0, 0.3, "Musisz zapłacić 30% podatku"));
+    }
+
+    public Chance getRandomChance() {
+        int min = 1;
+        int max = chances.size();
+        int chanceResult = (int) Math.floor(Math.random() * (max - min + 1) + min);
+        return chances.get(chanceResult - 1);
     }
 
     private void generateFieldsList() {
