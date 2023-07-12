@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Board extends JPanel {
-    private final Image mainBoard = new ImageIcon("./assets/planszafinal.png").getImage();
+    private final Image mainBoard = new ImageIcon("./assets/planszafinal.jpg").getImage();
     public final static int BEGIN_COORDINATE = 0;
     private final ArrayList<Field> fields = new ArrayList<>();
     private final ArrayList<Coordinate> fieldsCoordinates = new ArrayList<>();
