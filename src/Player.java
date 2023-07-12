@@ -70,6 +70,9 @@ public class Player extends JLabel {
         return moneyInWallet;
     }
 
+    public PlayersColors getPlayerColor() {
+        return playerColor;
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

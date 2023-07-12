@@ -55,7 +55,11 @@ public class Field extends JLabel {
     public Image getFieldCard() {
         return fieldCard;
     }
+    public void setFieldCard(Image image) {
+        fieldCard = image;
+    }
 
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(fieldCard, 0, 0, this);
