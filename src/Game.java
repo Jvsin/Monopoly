@@ -11,7 +11,8 @@ public class Game extends JFrame {
     private final Board board;
     private final JPanel gameInfoPanel = new JPanel();
     private final JLabel textInfoGame = new JLabel();
-    private final JLabel textInfoPlayer = new JLabel();
+    private final JLabel titlePlayerPanel = new JLabel();
+    private final JPanel[] playersPanels;
     private final JPanel playerInfoPanel = new JPanel();
     private Field cardView = null;
     private final JLabel dicePlaceholder = new JLabel();
@@ -22,36 +23,43 @@ public class Game extends JFrame {
 
     private static int PLAYER_NUMBER;
     public int WINDOW_WIDTH = 1500;
-    public int WINDOW_HEIGHT = 930;
+    public int WINDOW_HEIGHT = 1000;
     private final int START_BONUS = 400; // TODO: Ekonomia -> premia za przejscie przez start
     private final int HOUSE_PRICE = 500; // TODO: Ekonomia -> koszt dobudowania domu
 
     public Game() {
         board = new Board();
         players = new Player[PLAYER_NUMBER];
+        playersPanels = new JPanel[PLAYER_NUMBER];
+
         if (PLAYER_NUMBER >= 1) {
             players[0] = new Player(PlayersColors.BLUE);
+            playersPanels[0] = new JPanel();
             board.setPawn(players[0], 0);
         }
         if (PLAYER_NUMBER >= 2) {
             players[1] = new Player(PlayersColors.RED);
+            playersPanels[1] = new JPanel();
             board.setPawn(players[1], 0);
         }
         if (PLAYER_NUMBER >= 3) {
             players[2] = new Player(PlayersColors.GREEN);
+            playersPanels[2] = new JPanel();
             board.setPawn(players[2], 0);
         }
         if (PLAYER_NUMBER == 4) {
             players[3] = new Player(PlayersColors.YELLOW);
+            playersPanels[3] = new JPanel();
             board.setPawn(players[3], 0);
         }
         currentPlayer = players[0];
         setDefaultCard();
         setWindowParameters();
 
-        currentPlayer.tempFunAddCity(board.getField(1));
-        currentPlayer.tempFunAddCity(board.getField(3));
-        currentPlayer.tempFunAddCity(board.getField(11));
+        players[0].tempFunAddCity(board.getField(1));
+        players[2].tempFunAddCity(board.getField(3));
+        players[3].tempFunAddCity(board.getField(11));
+        players[3].tempFunAddCity(board.getField(13));
     }
 
     public static void startMenu() {
@@ -89,7 +97,7 @@ public class Game extends JFrame {
         board.repaint();
         gameInfoPanel.repaint();
         playerInfoPanel.repaint();
-        setPlayerCards(currentPlayer);
+        setPlayerMiniCards();
     }
     private void setDiceListeners() {
         final CountDownLatch latch = new CountDownLatch(1);
@@ -123,8 +131,8 @@ public class Game extends JFrame {
         textInfoGame.setText("Ruch: " + currentPlayer.getPlayerColor());
     }
     private void setCardView() {
-        Field tempField = board.getField(currentPlayer.getPosition());
-        Image image = tempField.getFieldCard();
+        Field temp = board.getField(currentPlayer.getPosition());
+        Image image = temp.getFieldCard();
         cardView.setFieldCard(image);
         cardView.repaint();
     }
@@ -135,19 +143,21 @@ public class Game extends JFrame {
         cardView.repaint();
     }
 
-    private void setPlayerCards(Player currPlayer){
-        ArrayList<Field> fieldToDisplay = new ArrayList<>();
-        for(Field owns : currPlayer.getOwnedFields()){
-            Field tempField = owns;
-            tempField.setFieldCard(owns.getMiniFieldCard());
-            tempField.setPreferredSize(new Dimension(100, 30));
-            tempField.setBounds(0, 0, 100, 30);
-            fieldToDisplay.add(tempField);
+    private void setPlayerMiniCards(){
+        for(int i = 0; i < PLAYER_NUMBER; i++){
+            ArrayList<Field> fieldsToDisplay = new ArrayList<>();
+            for(Field owns : players[i].getOwnedFields()){
+                Field tempField = owns;
+                tempField.setFieldCard(owns.getMiniFieldCard());
+                tempField.setPreferredSize(new Dimension(100, 30));
+                tempField.setBounds(0, 0, 100, 30);
+                fieldsToDisplay.add(tempField);
+            }
+            for(Field field : fieldsToDisplay){
+                playersPanels[i].add(field,BorderLayout.SOUTH);
+            }
+            fieldsToDisplay.clear();
         }
-        for(Field field : fieldToDisplay){
-            playerInfoPanel.add(field);
-        }
-        playerInfoPanel.repaint();
     }
 
     public void setDiceView(int diceResult, Dice dicePlaceholder) {
@@ -157,6 +167,37 @@ public class Game extends JFrame {
     private void buyField(Player player, Field field) {
         field.setOwner(player);
         player.buyField(field);
+    }
+
+    private void setPlayersPanelView() {
+        playerInfoPanel.setPreferredSize(new Dimension(300, 900));
+        playerInfoPanel.setBounds(1200, 0, 300, 900);
+        playerInfoPanel.setBackground(new Color(227, 139, 27));
+
+        titlePlayerPanel.setPreferredSize(new Dimension(200, 20));
+        titlePlayerPanel.setBackground(new Color(255, 255, 255));
+        titlePlayerPanel.setForeground(new Color(236, 245, 133));
+        titlePlayerPanel.setHorizontalAlignment(JLabel.CENTER);
+        titlePlayerPanel.setFont(new Font("Arial", Font.BOLD, 20));
+        titlePlayerPanel.setText("PLAYERS PANELS:");
+        playerInfoPanel.add(titlePlayerPanel, BorderLayout.CENTER);
+
+        int counter = 0;
+        for(JPanel panel : playersPanels){
+            panel.setPreferredSize(new Dimension(300, 200));
+            panel.setBackground(new Color(236, 245, 133));
+
+            JLabel text = new JLabel();
+            text.setPreferredSize(new Dimension(300,15));
+            text.setForeground(new Color(227, 139, 27));
+            text.setFont(new Font("Arial",Font.BOLD,15));
+            text.setText("Player " + players[counter].getPlayerColor());
+            text.setHorizontalAlignment(JLabel.CENTER);
+            panel.add(text);
+
+            playerInfoPanel.add(panel,BorderLayout.SOUTH);
+            counter++;
+        }
     }
 
     private void setWindowParameters() {
@@ -203,17 +244,7 @@ public class Game extends JFrame {
         gameInfoPanel.add(dicePlaceholder);
         gameInfoPanel.add(dicePlaceholderSecond);
 
-        textInfoPlayer.setPreferredSize(new Dimension(200, 200));
-        textInfoPlayer.setBackground(new Color(255, 255, 255));
-        textInfoPlayer.setForeground(new Color(241, 3, 3));
-        textInfoPlayer.setHorizontalAlignment(JLabel.CENTER);
-        textInfoPlayer.setFont(new Font("Arial", Font.BOLD, 20));
-        textInfoPlayer.setText("Twoje karty:");
-
-        playerInfoPanel.setPreferredSize(new Dimension(300, 900));
-        playerInfoPanel.setBounds(1200, 0, 300, 900);
-        gameInfoPanel.setBackground(Color.YELLOW);
-        playerInfoPanel.add(textInfoPlayer, BorderLayout.CENTER);
+        setPlayersPanelView();
 
         this.add(gameInfoPanel, BorderLayout.WEST);
         this.add(board, BorderLayout.CENTER);
