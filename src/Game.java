@@ -15,7 +15,7 @@ public class Game extends JFrame {
     private final JLabel titlePlayerPanel = new JLabel();
     private final JPanel[] playersPanels;
     private final JPanel playerInfoPanel = new JPanel();
-    private final Field cardView;
+    private Field cardView;
     private final JLabel dicePlaceholder = new JLabel();
     private final JLabel dicePlaceholderSecond = new JLabel();
     private Dice firstDice = new Dice();
@@ -55,10 +55,6 @@ public class Game extends JFrame {
         setDefaultCard();
         setWindowParameters();
 
-        players[0].tempFunAddCity(board.getField(1));
-        players[2].tempFunAddCity(board.getField(3));
-        players[3].tempFunAddCity(board.getField(11));
-        players[3].tempFunAddCity(board.getField(13));
     }
 
     public static void startMenu() {
