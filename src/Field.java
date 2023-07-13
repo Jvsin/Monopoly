@@ -31,6 +31,14 @@ public class Field extends JLabel {
             owner = player;
     }
 
+    public String getFieldName() {
+        if ( fieldType == FieldType.NORMAL ) {
+            return Name +", "+country;
+        }
+        else {
+            return Name;
+        }
+    }
     public FieldType getFieldType() {
         return fieldType;
     }

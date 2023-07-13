@@ -66,8 +66,10 @@ public class Game extends JFrame {
             setInformation();
             setDiceListeners();
             System.out.println("wynik kostki:" + diceResult);
-            currentPlayer.playerMove(diceResult);
-            board.setPawn(currentPlayer, currentPlayer.getPosition());
+            if (currentPlayer.getPlayerStatus() == PlayerStatus.IN_GAME) {
+                currentPlayer.playerMove(diceResult);
+                board.setPawn(currentPlayer, currentPlayer.getPosition());
+            }
             setCardView();
             triggerFieldRound(board.getField(currentPlayer.getPosition()));
             System.out.println("pozycja gracza: " + currentPlayer.getPlayerColor() + " " + currentPlayer.getPosition());
@@ -79,9 +81,8 @@ public class Game extends JFrame {
     private void triggerFieldRound(Field field) {
         switch (field.getFieldType()) {
             case TAX -> triggerTax();
-            case BALL -> triggerBall(field);
             case JAIL -> triggerJail();
-            case NORMAL -> triggerNormal();
+            case NORMAL, BALL -> triggerNormal(field);
             case CHANCE -> triggerChance();
             case GO_TO_JAIL -> triggerGoToJail();
             case START, PARKING -> {
@@ -89,58 +90,61 @@ public class Game extends JFrame {
         }
     }
 
+    private void infoPanel(String s) {
+        JFrame f = new JFrame();
+        JOptionPane.showMessageDialog(f, s);
+    }
+
     private void triggerGoToJail() {
         currentPlayer.blockPlayer();
-        // TODO: okno informujące -> Idziesz do więzienia
+        infoPanel("Idziesz do więzienia.");
         board.setPawn(currentPlayer, currentPlayer.getPosition());
     }
 
     private void triggerChance() {
         Chance chance = board.getRandomChance();
-        // TODO: okno informujące -> wylosowałeś szansę o tekście i musisz zapłacić / wygrałeś
-        chance.getContents(); // treść szansy
+        infoPanel(chance.getContents());
         currentPlayer.increaseMoney(chance.getMoney(currentPlayer.getMoneyInWallet()));
         if (currentPlayer.getMoneyInWallet() < 0) {
             // TODO: Opcja windykacji działek
         }
     }
 
-    private void triggerNormal() {
-
-    }
-
-    private void triggerJail() {
-        // TODO: Rozgrywka -> Czy gracz wychodzi dopiero po wyrzuceniu 2*6?
-        if (diceResult == 12) {
-            // TODO: okno informujące -> wychodzisz z więzienia
-            currentPlayer.unlockPlayer();
-        } else {
-            // TODO: okno informujące -> zostajesz w więzieniu
-        }
-    }
-
-    private void triggerBall(Field field) {
+    private void triggerNormal(Field field) {
         if (field.getOwner() == null) {
             if (field.getBuyPrice() > currentPlayer.getMoneyInWallet()) {
-                // TODO: okno informujące -> nie masz wystarczająco kosy
+                infoPanel("Nie masz wystarczająco pieniędzy na zakup piłki.");
             } else {
-                // TODO: okno informujące -> pytanie czy chcesz kupić piłkę
                 buyField(currentPlayer, field);
             }
 
         } else if (field.getOwner() != currentPlayer) {
             int sleepPrice = (int) field.getSleepPrice();
-            // TODO: okno informujące -> konieczność zapłacenia opłaty za postój
+            infoPanel("Musisz zapłacić za postój " + sleepPrice);
             currentPlayer.decreaseMoney(sleepPrice);
-            // TODO: Opcja windykacji działek
+            field.getOwner().increaseMoney(sleepPrice);
+            if (currentPlayer.getMoneyInWallet() < 0) {
+                // TODO: Opcja windykacji działek
+            }
+        }
+    }
+
+    private void triggerJail() {
+        if (diceResult == 12) {
+            infoPanel("Wychodzisz z więzienia.");
+            currentPlayer.unlockPlayer();
+        } else if (currentPlayer.getPlayerStatus() == PlayerStatus.IN_JAIL) {
+            infoPanel("Zostajesz w więzieniu");
         }
     }
 
     private void triggerTax() {
-        int tax = (int) board.getRandomChance().getRandomTax() * currentPlayer.getMoneyInWallet();
-        // TODO: okno informujące -> musisz zapłacić tyle w podatkach
+        int tax = (int) (board.getRandomChance().getRandomTax() * currentPlayer.getMoneyInWallet());
+        infoPanel("Musisz zapłacić podatek od swoich oszczędności w wysokości " + tax);
         currentPlayer.decreaseMoney(tax);
-        // TODO: Opcja windykacji działek
+        if (currentPlayer.getMoneyInWallet() < 0) {
+            // TODO: Opcja windykacji działek
+        }
     }
 
     public void repaintBoard() {
@@ -195,8 +199,14 @@ public class Game extends JFrame {
     }
 
     private void buyField(Player player, Field field) {
-        field.setOwner(player);
-        player.buyField(field);
+        Object[] options = {"Tak", "Nie"};
+        int check = JOptionPane.showOptionDialog(null, "Czy chcesz kupić pole " + field.getFieldName() + "?", "Monopoly",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        if (check == 0) {
+            field.setOwner(player);
+            player.buyField(field);
+            infoPanel("Gratulacje zakupu " + field.getFieldName());
+        }
     }
 
     private void setWindowParameters() {
