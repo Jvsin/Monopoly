@@ -4,6 +4,7 @@ import java.awt.*;
 public class Field extends JLabel {
     private final int MAX_ACCOMMODATION_LEVEL = 3;
     private Image fieldCard;
+    private Image miniFieldCard = null;
     private final double[] ACCOMMODATION_PRICES = {0.1, 0.5, 1, 1.5}; //TODO: Ekonomia -> ceny spania
     private final String Name;
     private int buyPrice = 0;
@@ -72,6 +73,13 @@ public class Field extends JLabel {
 
     public void setFieldCard(Image image) {
         fieldCard = image;
+    }
+
+    public void setMiniFieldCard(Image miniFieldCard) {
+        this.miniFieldCard = miniFieldCard;
+    }
+    public Image getMiniFieldCard() {
+        return miniFieldCard;
     }
 
     @Override

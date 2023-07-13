@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Board extends JPanel {
-    private final Image mainBoard = new ImageIcon("./assets/planszafinal.png").getImage();
+    private final Image mainBoard = new ImageIcon("./assets/planszafinal.jpg").getImage();
     public final static int BEGIN_COORDINATE = 0;
     private final ArrayList<Field> fields = new ArrayList<>();
     private final ArrayList<Coordinate> fieldsCoordinates = new ArrayList<>();
@@ -15,6 +15,7 @@ public class Board extends JPanel {
         setParameters();
         generateCoordinatesList();
         generateFieldsList();
+        generateMiniCards();
         generateChanceField();
     }
 
@@ -98,6 +99,37 @@ public class Board extends JPanel {
         fields.add(new Field("London", 850, FieldType.NORMAL, Countries.ENGLAND, new ImageIcon("./assets/Cards/firstCard.png").getImage()));
     }
 
+    public void generateMiniCards () {
+        fields.get(1).setMiniFieldCard(new ImageIcon("./assets/Mini/PortElizabethMini.jpg").getImage());
+        fields.get(3).setMiniFieldCard(new ImageIcon("./assets/Mini/JohannesburgMini.jpg").getImage());
+        fields.get(5).setMiniFieldCard(new ImageIcon("./assets/Mini/TelstarMini.jpg").getImage());
+        fields.get(6).setMiniFieldCard(new ImageIcon("./assets/Mini/Chicago.jpg").getImage());
+        fields.get(8).setMiniFieldCard(new ImageIcon("./assets/Mini/WashingtonMini.jpg").getImage());
+        fields.get(9).setMiniFieldCard(new ImageIcon("./assets/Mini/PasadenaMini.jpg").getImage());
+
+        fields.get(11).setMiniFieldCard(new ImageIcon("./assets/Mini/ToulouseMini.jpg").getImage());
+        fields.get(13).setMiniFieldCard(new ImageIcon("./assets/Mini/MarsyllieMini.jpg").getImage());
+        fields.get(14).setMiniFieldCard(new ImageIcon("./assets/Mini/ParisMini.jpg").getImage());
+        fields.get(15).setMiniFieldCard(new ImageIcon("./assets/Mini/TangoMini.jpg").getImage());
+        fields.get(16).setMiniFieldCard(new ImageIcon("./assets/Mini/BerlinMini.jpg").getImage());
+        fields.get(18).setMiniFieldCard(new ImageIcon("./assets/Mini/DortmundMini.jpg").getImage());
+        fields.get(19).setMiniFieldCard(new ImageIcon("./assets/Mini/MunichMini.jpg").getImage());
+
+        fields.get(21).setMiniFieldCard(new ImageIcon("./assets/Mini/BuenosAiresMini.jpg").getImage());
+        fields.get(23).setMiniFieldCard(new ImageIcon("./assets/Mini/RosarioMini.jpg").getImage());
+        fields.get(25).setMiniFieldCard(new ImageIcon("./assets/Mini/BrazucaMini.jpg").getImage());
+        fields.get(26).setMiniFieldCard(new ImageIcon("./assets/Mini/NapoliMini.jpg").getImage());
+        fields.get(27).setMiniFieldCard(new ImageIcon("./assets/Mini/MilanMini.jpg").getImage());
+        fields.get(29).setMiniFieldCard(new ImageIcon("./assets/Mini/RomaMini.jpg").getImage());
+
+        fields.get(31).setMiniFieldCard(new ImageIcon("./assets/Mini/BrasiliaMini.jpg").getImage());
+        fields.get(32).setMiniFieldCard(new ImageIcon("./assets/Mini/SaoPauloMini.jpg").getImage());
+        fields.get(34).setMiniFieldCard(new ImageIcon("./assets/Mini/RioDeJaneiroMini.jpg").getImage());
+        fields.get(35).setMiniFieldCard(new ImageIcon("./assets/Mini/JabulaniMini.jpg").getImage());
+        fields.get(36).setMiniFieldCard(new ImageIcon("./assets/Mini/BirminghamMini.jpg").getImage());
+        fields.get(37).setMiniFieldCard(new ImageIcon("./assets/Mini/ManchesterMini.jpg").getImage());
+        fields.get(39).setMiniFieldCard(new ImageIcon("./assets/Mini/LondonMini.jpg").getImage());
+    }
     private void generateCoordinatesList() {
         fieldsCoordinates.add(new Coordinate(beginX, beginY));
         generateCoordinatesRow(-71, 0);
