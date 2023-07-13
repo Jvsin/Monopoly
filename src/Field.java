@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Field extends JLabel {
-    private final int MAX_ACCOMMODATION_LEVEL = 3;
+    public final int MAX_ACCOMMODATION_LEVEL = 3;
     private Image fieldCard;
     private Image miniFieldCard = null;
     private final double[] ACCOMMODATION_PRICES = {0.1, 0.5, 1, 1.5}; //TODO: Ekonomia -> ceny spania
@@ -33,13 +33,17 @@ public class Field extends JLabel {
     }
 
     public String getFieldName() {
-        if ( fieldType == FieldType.NORMAL ) {
-            return Name +", "+country;
-        }
-        else {
+        if (fieldType == FieldType.NORMAL) {
+            return Name + ", " + country;
+        } else {
             return Name;
         }
     }
+
+    public Countries getCountry() {
+        return country;
+    }
+
     public FieldType getFieldType() {
         return fieldType;
     }
@@ -67,6 +71,10 @@ public class Field extends JLabel {
         return 0;
     }
 
+    public int getAccommodationLevel() {
+        return accommodationLevel;
+    }
+
     public Image getFieldCard() {
         return fieldCard;
     }
@@ -78,6 +86,7 @@ public class Field extends JLabel {
     public void setMiniFieldCard(Image miniFieldCard) {
         this.miniFieldCard = miniFieldCard;
     }
+
     public Image getMiniFieldCard() {
         return miniFieldCard;
     }

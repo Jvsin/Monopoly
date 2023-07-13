@@ -135,6 +135,12 @@ public class Game extends JFrame {
             if (currentPlayer.getMoneyInWallet() < 0) {
                 // TODO: Opcja windykacji działek
             }
+        } else if (field.getOwner() == currentPlayer
+                && field.getFieldType() == FieldType.NORMAL
+                && currentPlayer.isHavingAllCountry(field.getCountry())
+                && currentPlayer.getMoneyInWallet() >= HOUSE_PRICE
+                && field.getAccommodationLevel() < field.MAX_ACCOMMODATION_LEVEL) {
+            buildHouses(field);
         }
     }
 
@@ -203,25 +209,26 @@ public class Game extends JFrame {
         cardView.setFieldCard(image);
         cardView.repaint();
     }
-    private void setDefaultCard () {
+
+    private void setDefaultCard() {
         Image image = new ImageIcon("./assets/Cards/defaultCard.png").getImage();
         cardView = board.getField(0);
         cardView.setFieldCard(image);
         cardView.repaint();
     }
 
-    private void setPlayerMiniCards(){
-        for(int i = 0; i < PLAYER_NUMBER; i++){
+    private void setPlayerMiniCards() {
+        for (int i = 0; i < PLAYER_NUMBER; i++) {
             ArrayList<Field> fieldsToDisplay = new ArrayList<>();
-            for(Field owns : players[i].getOwnedFields()){
+            for (Field owns : players[i].getOwnedFields()) {
                 Field tempField = owns;
                 tempField.setFieldCard(owns.getMiniFieldCard());
                 tempField.setPreferredSize(new Dimension(100, 30));
                 tempField.setBounds(0, 0, 100, 30);
                 fieldsToDisplay.add(tempField);
             }
-            for(Field field : fieldsToDisplay){
-                playersPanels[i].add(field,BorderLayout.SOUTH);
+            for (Field field : fieldsToDisplay) {
+                playersPanels[i].add(field, BorderLayout.SOUTH);
             }
             fieldsToDisplay.clear();
         }
@@ -242,6 +249,17 @@ public class Game extends JFrame {
         }
     }
 
+    private void buildHouses(Field field) {
+        Object[] options = {"Tak", "Nie"};
+        int check = JOptionPane.showOptionDialog(null, "Czy podnieść poziom na polu " + field.getFieldName() + " za " + HOUSE_PRICE + "?",
+                "Monopoly", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        if (check == 0) {
+            field.increaseAccommodationLevel();
+            currentPlayer.decreaseMoney(HOUSE_PRICE);
+            infoPanel("Właśnie podwyższyłeś poziom pola " + field.getFieldType() + " na " + field.getAccommodationLevel());
+        }
+    }
+
     private void setPlayersPanelView() {
         playerInfoPanel.setPreferredSize(new Dimension(300, 900));
         playerInfoPanel.setBounds(1200, 0, 300, 900);
@@ -256,19 +274,19 @@ public class Game extends JFrame {
         playerInfoPanel.add(titlePlayerPanel, BorderLayout.CENTER);
 
         int counter = 0;
-        for(JPanel panel : playersPanels){
+        for (JPanel panel : playersPanels) {
             panel.setPreferredSize(new Dimension(300, 200));
             panel.setBackground(new Color(236, 245, 133));
 
             JLabel text = new JLabel();
-            text.setPreferredSize(new Dimension(300,15));
+            text.setPreferredSize(new Dimension(300, 15));
             text.setForeground(new Color(227, 139, 27));
-            text.setFont(new Font("Arial",Font.BOLD,15));
+            text.setFont(new Font("Arial", Font.BOLD, 15));
             text.setText("Player " + players[counter].getPlayerColor());
             text.setHorizontalAlignment(JLabel.CENTER);
             panel.add(text);
 
-            playerInfoPanel.add(panel,BorderLayout.SOUTH);
+            playerInfoPanel.add(panel, BorderLayout.SOUTH);
             counter++;
         }
     }
