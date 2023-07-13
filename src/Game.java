@@ -1,3 +1,4 @@
+import javax.crypto.spec.ChaCha20ParameterSpec;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -14,17 +15,15 @@ public class Game extends JFrame {
     private final JLabel titlePlayerPanel = new JLabel();
     private final JPanel[] playersPanels;
     private final JPanel playerInfoPanel = new JPanel();
-    private Field cardView = null;
+    private final Field cardView;
     private final JLabel dicePlaceholder = new JLabel();
     private final JLabel dicePlaceholderSecond = new JLabel();
     private Dice firstDice = new Dice();
     private Dice secondDice = new Dice();
     private int diceResult;
-
     private static int PLAYER_NUMBER;
     public int WINDOW_WIDTH = 1500;
     public int WINDOW_HEIGHT = 1000;
-    private final int START_BONUS = 400; // TODO: Ekonomia -> premia za przejscie przez start
     private final int HOUSE_PRICE = 500; // TODO: Ekonomia -> koszt dobudowania domu
 
     public Game() {
@@ -66,7 +65,6 @@ public class Game extends JFrame {
         Object[] options = {"2 graczy", "3 graczy", "4 graczy"};
         int check = JOptionPane.showOptionDialog(null, "Wybierz ilość graczy: ", "Monopoly",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-        System.out.println(check);
         if (check == 0)
             PLAYER_NUMBER = 2;
         else if (check == 1)
@@ -81,24 +79,95 @@ public class Game extends JFrame {
             setInformation();
             setDiceListeners();
             System.out.println("wynik kostki:" + diceResult);
-            currentPlayer.playerMove(diceResult);
-            board.setPawn(currentPlayer,currentPlayer.getPosition());
+            if (currentPlayer.getPlayerStatus() == PlayerStatus.IN_GAME) {
+                currentPlayer.playerMove(diceResult);
+                board.setPawn(currentPlayer, currentPlayer.getPosition());
+            }
             setCardView();
+            triggerFieldRound(board.getField(currentPlayer.getPosition()));
             System.out.println("pozycja gracza: " + currentPlayer.getPlayerColor() + " " + currentPlayer.getPosition());
             diceResult = 0;
             repaintBoard();
-            //TODO: Rozgrywka -> kolejnosc rund dla graczy
-            //TODO: Kostka -> dodać listenery na 2 kostki na raz
         }
     }
 
-    public void repaintBoard(){
+    private void triggerFieldRound(Field field) {
+        switch (field.getFieldType()) {
+            case TAX -> triggerTax();
+            case JAIL -> triggerJail();
+            case NORMAL, BALL -> triggerNormal(field);
+            case CHANCE -> triggerChance();
+            case GO_TO_JAIL -> triggerGoToJail();
+            case START, PARKING -> {
+            }
+        }
+    }
+
+    private void infoPanel(String s) {
+        JFrame f = new JFrame();
+        JOptionPane.showMessageDialog(f, s);
+    }
+
+    private void triggerGoToJail() {
+        currentPlayer.blockPlayer();
+        infoPanel("Idziesz do więzienia.");
+        board.setPawn(currentPlayer, currentPlayer.getPosition());
+    }
+
+    private void triggerChance() {
+        Chance chance = board.getRandomChance();
+        infoPanel(chance.getContents());
+        currentPlayer.increaseMoney(chance.getMoney(currentPlayer.getMoneyInWallet()));
+        if (currentPlayer.getMoneyInWallet() < 0) {
+            // TODO: Opcja windykacji działek
+        }
+    }
+
+    private void triggerNormal(Field field) {
+        if (field.getOwner() == null) {
+            if (field.getBuyPrice() > currentPlayer.getMoneyInWallet()) {
+                infoPanel("Nie masz wystarczająco pieniędzy na zakup piłki.");
+            } else {
+                buyField(currentPlayer, field);
+            }
+
+        } else if (field.getOwner() != currentPlayer) {
+            int sleepPrice = (int) field.getSleepPrice();
+            infoPanel("Musisz zapłacić za postój " + sleepPrice);
+            currentPlayer.decreaseMoney(sleepPrice);
+            field.getOwner().increaseMoney(sleepPrice);
+            if (currentPlayer.getMoneyInWallet() < 0) {
+                // TODO: Opcja windykacji działek
+            }
+        }
+    }
+
+    private void triggerJail() {
+        if (diceResult == 12) {
+            infoPanel("Wychodzisz z więzienia.");
+            currentPlayer.unlockPlayer();
+        } else if (currentPlayer.getPlayerStatus() == PlayerStatus.IN_JAIL) {
+            infoPanel("Zostajesz w więzieniu");
+        }
+    }
+
+    private void triggerTax() {
+        int tax = (int) (board.getRandomChance().getRandomTax() * currentPlayer.getMoneyInWallet());
+        infoPanel("Musisz zapłacić podatek od swoich oszczędności w wysokości " + tax);
+        currentPlayer.decreaseMoney(tax);
+        if (currentPlayer.getMoneyInWallet() < 0) {
+            // TODO: Opcja windykacji działek
+        }
+    }
+
+    public void repaintBoard() {
         setCardView();
         board.repaint();
         gameInfoPanel.repaint();
         playerInfoPanel.repaint();
         setPlayerMiniCards();
     }
+
     private void setDiceListeners() {
         final CountDownLatch latch = new CountDownLatch(1);
         firstDice.addMouseListener(new MouseAdapter() {
@@ -127,9 +196,11 @@ public class Game extends JFrame {
         firstDice.removeMouseListener(firstDice.getMouseListeners()[0]);
         secondDice.removeMouseListener(secondDice.getMouseListeners()[0]);
     }
-    private void setInformation () {
+
+    private void setInformation() {
         textInfoGame.setText("Ruch: " + currentPlayer.getPlayerColor());
     }
+
     private void setCardView() {
         Field temp = board.getField(currentPlayer.getPosition());
         Image image = temp.getFieldCard();
@@ -165,8 +236,14 @@ public class Game extends JFrame {
     }
 
     private void buyField(Player player, Field field) {
-        field.setOwner(player);
-        player.buyField(field);
+        Object[] options = {"Tak", "Nie"};
+        int check = JOptionPane.showOptionDialog(null, "Czy chcesz kupić pole " + field.getFieldName() + "?", "Monopoly",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        if (check == 0) {
+            field.setOwner(player);
+            player.buyField(field);
+            infoPanel("Gratulacje zakupu " + field.getFieldName());
+        }
     }
 
     private void setPlayersPanelView() {

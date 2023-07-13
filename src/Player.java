@@ -9,10 +9,12 @@ public class Player extends JLabel {
     private int positionOnMap;
     public final static int PAWN_WIDTH = 30;
     public final static int PAWN_HEIGHT = 30;
+    private final static int JAIL_INDEX = 10;
     private final PlayersColors playerColor;
     private PlayerStatus playerStatus;
 
     private final ArrayList<Field> ownedFields = new ArrayList<>();
+    private final int START_BONUS = 400; // TODO: Ekonomia -> premia za przejscie przez start
 
     Player(PlayersColors color) {
         moneyInWallet = 2000; //TODO: Ekonomia -> pieniądze startowe
@@ -40,6 +42,7 @@ public class Player extends JLabel {
     }
 
     public void blockPlayer() {
+        positionOnMap = JAIL_INDEX;
         playerStatus = PlayerStatus.IN_JAIL;
     }
 
@@ -53,8 +56,10 @@ public class Player extends JLabel {
 
     public void playerMove(int distance) {
         positionOnMap += distance;
-        if (positionOnMap >= MAP_DISTANCE)
+        if (positionOnMap >= MAP_DISTANCE) {
+            moneyInWallet += START_BONUS;
             positionOnMap -= MAP_DISTANCE;
+        }
     }
 
     public int getPosition() {
@@ -80,6 +85,7 @@ public class Player extends JLabel {
     public ArrayList<Field> getOwnedFields() {
         return ownedFields;
     }
+  
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

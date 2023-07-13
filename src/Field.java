@@ -32,6 +32,18 @@ public class Field extends JLabel {
             owner = player;
     }
 
+    public String getFieldName() {
+        if ( fieldType == FieldType.NORMAL ) {
+            return Name +", "+country;
+        }
+        else {
+            return Name;
+        }
+    }
+    public FieldType getFieldType() {
+        return fieldType;
+    }
+
     public Player getOwner() {
         return owner;
     }
@@ -49,6 +61,8 @@ public class Field extends JLabel {
     public double getSleepPrice() {
         if (fieldType == FieldType.NORMAL) {
             return buyPrice * ACCOMMODATION_PRICES[accommodationLevel];
+        } else if (fieldType == FieldType.BALL) {
+            return buyPrice * 0.5;  // TODO: Ekonomia -> cena za postój na piłce - 250
         }
         return 0;
     }
@@ -56,6 +70,7 @@ public class Field extends JLabel {
     public Image getFieldCard() {
         return fieldCard;
     }
+
     public void setFieldCard(Image image) {
         fieldCard = image;
     }
