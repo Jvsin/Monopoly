@@ -29,10 +29,6 @@ public class Player extends JLabel {
         }
     }
 
-    public void tempFunAddCity(Field boughtField) {
-        ownedFields.add(boughtField);
-    }
-
     public PlayerStatus getPlayerStatus() {
         return playerStatus;
     }
@@ -65,12 +61,12 @@ public class Player extends JLabel {
 
     public boolean isHavingAllCountry(Countries country) {
         ArrayList<String> list = country.getCities(country);
+        ArrayList<String> ownedList = new ArrayList<>();
+        ownedFields.forEach(field -> ownedList.add(field.getFieldName()));
         int appends = 0;
         for (String city : list) {
-            for (Field myCity : ownedFields) {
-                if (myCity.getFieldName().equals(city))
-                    appends++;
-            }
+            if ( ownedList.contains(city))
+                appends++;
         }
         return appends == list.size();
     }

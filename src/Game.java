@@ -1,4 +1,3 @@
-import javax.crypto.spec.ChaCha20ParameterSpec;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -71,19 +70,21 @@ public class Game extends JFrame {
 
     public void round() {
         for (Player player : players) {
-            currentPlayer = player;
-            setInformation();
-            setDiceListeners();
-            System.out.println("wynik kostki:" + diceResult);
-            if (currentPlayer.getPlayerStatus() == PlayerStatus.IN_GAME) {
-                currentPlayer.playerMove(diceResult);
-                board.setPawn(currentPlayer, currentPlayer.getPosition());
+            if (player.getPlayerStatus() != PlayerStatus.LOST) {
+                currentPlayer = player;
+                setInformation();
+                setDiceListeners();
+                System.out.println("wynik kostki:" + diceResult);
+                if (currentPlayer.getPlayerStatus() == PlayerStatus.IN_GAME) {
+                    currentPlayer.playerMove(diceResult);
+                    board.setPawn(currentPlayer, currentPlayer.getPosition());
+                }
+                setCardView();
+                triggerFieldRound(board.getField(currentPlayer.getPosition()));
+                System.out.println("pozycja gracza: " + currentPlayer.getPlayerColor() + " " + currentPlayer.getPosition());
+                diceResult = 0;
+                repaintBoard();
             }
-            setCardView();
-            triggerFieldRound(board.getField(currentPlayer.getPosition()));
-            System.out.println("pozycja gracza: " + currentPlayer.getPlayerColor() + " " + currentPlayer.getPosition());
-            diceResult = 0;
-            repaintBoard();
         }
     }
 
@@ -221,11 +222,10 @@ public class Game extends JFrame {
         for (int i = 0; i < PLAYER_NUMBER; i++) {
             ArrayList<Field> fieldsToDisplay = new ArrayList<>();
             for (Field owns : players[i].getOwnedFields()) {
-                Field tempField = owns;
-                tempField.setFieldCard(owns.getMiniFieldCard());
-                tempField.setPreferredSize(new Dimension(100, 30));
-                tempField.setBounds(0, 0, 100, 30);
-                fieldsToDisplay.add(tempField);
+                owns.setFieldCard(owns.getMiniFieldCard());
+                owns.setPreferredSize(new Dimension(100, 30));
+                owns.setBounds(0, 0, 100, 30);
+                fieldsToDisplay.add(owns);
             }
             for (Field field : fieldsToDisplay) {
                 playersPanels[i].add(field, BorderLayout.SOUTH);
