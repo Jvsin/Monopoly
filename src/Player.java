@@ -12,7 +12,6 @@ public class Player extends JLabel {
     private final static int JAIL_INDEX = 10;
     private final PlayersColors playerColor;
     private PlayerStatus playerStatus;
-
     private final ArrayList<Field> ownedFields = new ArrayList<>();
     private final int START_BONUS = 400; // TODO: Ekonomia -> premia za przejscie przez start
 
@@ -29,9 +28,7 @@ public class Player extends JLabel {
             default -> this.icon = null;
         }
     }
-    public void tempFunAddCity(Field boughtField){
-        ownedFields.add(boughtField);
-    }
+
     public PlayerStatus getPlayerStatus() {
         return playerStatus;
     }
@@ -62,6 +59,18 @@ public class Player extends JLabel {
         }
     }
 
+    public boolean isHavingAllCountry(Countries country) {
+        ArrayList<String> list = country.getCities(country);
+        ArrayList<String> ownedList = new ArrayList<>();
+        ownedFields.forEach(field -> ownedList.add(field.getFieldName()));
+        int appends = 0;
+        for (String city : list) {
+            if ( ownedList.contains(city))
+                appends++;
+        }
+        return appends == list.size();
+    }
+
     public int getPosition() {
         return positionOnMap;
     }
@@ -85,7 +94,7 @@ public class Player extends JLabel {
     public ArrayList<Field> getOwnedFields() {
         return ownedFields;
     }
-  
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
